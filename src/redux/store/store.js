@@ -3,9 +3,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persistReducer, persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
 import { uiReducer } from '../reducers/uiReducer';
+import { authReducer } from '../reducers/authReducer';
 
 const reducers = combineReducers({
-	ui: uiReducer
+	ui: uiReducer,
+	auth: authReducer
 });
 
 const persistConfig = {

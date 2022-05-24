@@ -6,6 +6,7 @@ import {Provider} from 'react-redux';
 import reduxStore from './src/redux/store/store';
 import {PersistGate} from 'redux-persist/integration/react';
 import AppNavigation from './src/navigation/AppNavigation';
+import Root from './src/components/Modals/Root';
 
 const theme = {
   ...DefaultTheme,
@@ -18,9 +19,11 @@ const App = () => {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <PaperProvider theme={theme}>
-          <NavigationContainer>
-            <AppNavigation />
-          </NavigationContainer>
+          <Root>
+            <NavigationContainer>
+              <AppNavigation />
+            </NavigationContainer>
+          </Root>
         </PaperProvider>
       </PersistGate>
     </Provider>
