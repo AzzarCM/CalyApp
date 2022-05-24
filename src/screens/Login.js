@@ -12,9 +12,9 @@ import { startLoginEmailPassword } from '../redux/actions/auth';
 
 
 const Login = () => {
-
   const dispatch = useDispatch();
-  const ui = useSelector(state => state.ui);
+
+  const { loading } = useSelector(state => state.ui);
 
   const [formValues, setFormValues, reset] = useForm({
     username: '',
@@ -51,7 +51,7 @@ const Login = () => {
             onChangeText={setFormValues('password')}
             secure
           />
-          <Button onPress={handleSubmit} text="Iniciar" />
+          <Button onPress={handleSubmit} text="Iniciar" loading={loading} />
         </View>
 
         <Image style={styles.imageContainer} source={ImageLogin} />

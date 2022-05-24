@@ -7,11 +7,10 @@ export async function userLogin(email, password) {
       password,
     };
     const {data} = await database.post('/auth/login', dataBody);
-    const {token, message} = data;
+    const {token} = data;
     return {
       ok: true,
       token,
-      message,
     };
   } catch (error) {
     const {detail} = error?.response?.data;
