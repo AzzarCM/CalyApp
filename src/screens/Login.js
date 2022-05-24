@@ -9,6 +9,8 @@ import Button from '../components/Button';
 import {useForm} from '../hooks/useForm';
 import { useSelector, useDispatch } from 'react-redux';
 import { startLoginEmailPassword } from '../redux/actions/auth';
+import { validLogin } from '../utils/valid-forms';
+import { showToast } from '../utils/utils';
 
 
 const Login = () => {
@@ -24,8 +26,13 @@ const Login = () => {
   const {username, password} = formValues;
 
   const handleSubmit = () => {
-    console.log('handleSubmit');
-    dispatch(startLoginEmailPassword(username, password));
+    try {
+      if(validLogin(username, password)){
+        dispatch(startLoginEmailPassword(username, password));
+      }
+    } catch ({ message }) {
+      showToast('error', '¡Oh no!', message);
+    }
   };
 
   return (
