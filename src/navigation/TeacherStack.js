@@ -3,6 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Home from '../screens/Home';
 import EditProfile from '../screens/EditProfile';
+import HandwritingAnalysis from '../screens/HandwritingAnalysis';
 
 const Stack = createStackNavigator();
 
@@ -35,6 +36,22 @@ export default function TeacherStack() {
           headerBackImage: () => buttonLeft(),
           headerStyle: {
             backgroundColor: '#FBF5F2',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="HandwritingAnalysis"
+        component={HandwritingAnalysis}
+        options={{
+          title: 'Análisis caligráfico',
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            fontSize: 22,
+            fontFamily: 'Sora-Medium',
+          },
+          headerBackImage: () => buttonLeft(),
+          headerStyle: {
+            backgroundColor: '#FBF5F2'
           },
         }}
       />
