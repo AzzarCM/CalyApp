@@ -31,6 +31,7 @@ export default function StudentStack() {
           headerTitleAlign: 'center',
           headerTitleStyle: {
             fontSize: 22,
+            fontFamily: 'Sora-Medium',
           },
           headerBackImage: () => buttonLeft(),
           headerStyle: {
