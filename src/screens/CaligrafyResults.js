@@ -6,7 +6,6 @@ export default function CaligrafyResults() {
   return (
     <SafeAreaView>
       <ScrollView contentContainerStyle={styles.mainContainer}>
-        <Text style={styles.title}>Resultados</Text>
         <ResultComponent/>
         <ResultComponent/>
         <ResultComponent/>

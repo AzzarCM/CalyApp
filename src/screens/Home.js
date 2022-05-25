@@ -78,7 +78,7 @@ const Home = () => {
         <HomeItem
           title="Resultados"
           image={ResultadosImage}
-          onPress={() => console.log('press')}
+          onPress={() => navigation.navigate('StudentResults')}
         />
         <HomeItem
           title="Editar perfil"
