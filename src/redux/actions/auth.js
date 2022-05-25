@@ -1,8 +1,10 @@
 import {userLogin} from '../../api/auth';
 import {showToast} from '../../utils/utils';
 import {types} from '../types/types';
-import {finishLoading, startLoading} from './ui';
+import {error, finishLoading, startLoading, success} from './ui';
 import jwt_decode from 'jwt-decode';
+import {updateStudent} from '../../api/student';
+import { fileUpload } from '../../utils/file-upload';
 
 export const startLoginEmailPassword = (email, password) => {
   return async (dispatch, getState) => {
@@ -19,6 +21,43 @@ export const startLoginEmailPassword = (email, password) => {
         showToast('error', '¡Oh no!', 'Credenciales incorrectas');
       }
       dispatch(finishLoading());
+    }
+  };
+};
+
+export const updateStudentProfile = (id, token, dataBody, newUrl) => {
+  return async (dispatch, getState) => {
+    const {loading} = getState().ui;
+    if (!loading) {
+      dispatch(error());
+      dispatch(startLoading());
+      let fileUrl = null;
+      if(newUrl) {
+        fileUrl = await fileUpload(newUrl);
+      }
+      const response = await updateStudent(id, token, {
+        ...dataBody,
+        photo: fileUrl || dataBody.photo,
+      });
+      if (response.ok) {
+        dispatch(
+          updateUser({
+            ...dataBody,
+            name: dataBody.full_name,
+            photo: fileUrl || dataBody.photo,
+          }),
+        );
+        dispatch(success());
+        showToast(
+          'success',
+          'Perfil actualizado',
+          'Perfil actualizado exitosamente',
+        );
+      } else {
+        showToast('error', '¡Oh no!', 'Credenciales incorrectas');
+      }
+      dispatch(finishLoading());
+      dispatch(error());
     }
   };
 };

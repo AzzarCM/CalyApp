@@ -38,8 +38,6 @@ const ImagePicker = ({urlImage = null, setImage}) => {
     });
   };
 
-  console.log('State: ', imageSelected);
-
   return (
     <>
       {imageSelected.fileUri ? (
@@ -48,6 +46,7 @@ const ImagePicker = ({urlImage = null, setImage}) => {
             source={{uri: imageSelected.fileUri}}
             onPress={() => {
               setImageSelected(initialState);
+              setImage(null);
             }}
           />
           <ImageInput

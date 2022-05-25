@@ -1,32 +1,56 @@
-import {StyleSheet, Text, View, SafeAreaView} from 'react-native';
-import React, {useState} from 'react';
-import {useSelector} from 'react-redux';
+import {StyleSheet, View, SafeAreaView} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import ImagePicker from '../components/ImagePicker/ImagePicker';
 import FormInput from '../components/Inputs/FormInput';
 import Button from '../components/Button';
+import {updateStudentProfile} from '../redux/actions/auth';
+import { fileUpload } from '../utils/file-upload';
 
-const EditProfile = () => {
-  const {photo, name} = useSelector(state => state.auth);
+const EditProfile = ({navigation}) => {
+  const dispatch = useDispatch();
+  const {photo, name, token, uid} = useSelector(state => state.auth);
+  const {loading, success} = useSelector(state => state.ui);
   const [profileData, setProfileData] = useState({
     name: name,
     photo: photo,
-  })
+  });
 
-  const { name: newName, photo: newPhoto } = profileData;
+  const {name: newName, photo: newPhoto} = profileData;
+
+  useEffect(() => {
+    if (success) {
+      navigation.navigate('Home');
+    }
+  }, [success]);
+
+  const onUpdateProfile = async () => {
+    let source = null;
+    if(newPhoto !== photo) {
+      source = 'data:image/jpg;base64,' + newPhoto;
+    }
+    dispatch(updateStudentProfile(uid, token, {
+      full_name: newName,
+      photo: newPhoto,
+    }, source));
+  };
 
   return (
     <SafeAreaView style={styles.mainContainer}>
       <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#FBF5F2" />
       <View style={styles.formContainer}>
-        <ImagePicker urlImage={newPhoto} setImage={(img) => setProfileData({ ...profileData, photo: img })} />
+        <ImagePicker
+          urlImage={newPhoto}
+          setImage={img => setProfileData({...profileData, photo: img})}
+        />
         <FormInput
           label="Nombre: "
           value={newName}
-          onChangeText={text => setProfileData({ ...profileData, name: text })}
+          onChangeText={text => setProfileData({...profileData, name: text})}
         />
         <View style={styles.btnContainer}>
-          <Button text="guardar" onPress={() => {}} />
+          <Button text="guardar" onPress={onUpdateProfile} loading={loading} />
         </View>
       </View>
     </SafeAreaView>
@@ -47,5 +71,5 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     marginHorizontal: 80,
-  }
+  },
 });

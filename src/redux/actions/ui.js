@@ -7,3 +7,11 @@ export const startLoading = () => ({
 export const finishLoading = () => ({
     type: types.finishLoading,
 });
+
+export const success = () => ({
+    type: types.success,
+});
+
+export const error = () => ({
+    type: types.error,
+});

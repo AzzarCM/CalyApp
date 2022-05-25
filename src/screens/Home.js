@@ -41,6 +41,7 @@ const Home = () => {
     closeMenu();
   };
 
+
   return (
     <SafeAreaView style={styles.mainContainer}>
       <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#FBF5F2" />
@@ -62,7 +63,7 @@ const Home = () => {
       </View>
       <View style={styles.nameContainer}>
         <Text style={styles.greetings}>Hola, </Text>
-        <Text style={styles.name}>{name.split(' ')[0]}</Text>
+        <Text style={styles.name}>{ name.split(" ")[0]}</Text>
       </View>
       <ScrollView contentContainerStyle={styles.itemsContainer}>
         <HomeItem
