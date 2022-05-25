@@ -4,6 +4,7 @@ const initialState = {
   uid: null,
   role: null,
   name: null,
+  photo: null,
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -14,6 +15,7 @@ export const authReducer = (state = initialState, action) => {
         uid: action.payload.uid,
         role: action.payload.role,
         name: action.payload.name,
+        photo: action.payload.photo,
       };
     case types.logout:
       return initialState;
