@@ -12,8 +12,8 @@ export const startLoginEmailPassword = (email, password) => {
       const response = await userLogin(email, password);
       if (response.ok) {
         const {token} = response;
-        const {id, name, role, photo} = jwt_decode(token);
-        dispatch(login(id, name, role, photo));
+        const {id, name, role, photo, active} = jwt_decode(token);
+        dispatch(login(id, name, role, photo, token, active));
         showToast('success', '¡Bienvenido!', 'Iniciaste sesión correctamente');
       } else {
         showToast('error', '¡Oh no!', 'Credenciales incorrectas');
@@ -23,13 +23,20 @@ export const startLoginEmailPassword = (email, password) => {
   };
 };
 
-export const login = (uid, name, role, photo) => ({
+export const updateUser = newData => ({
+  type: types.updateUser,
+  payload: newData,
+});
+
+export const login = (uid, name, role, photo, token, active) => ({
   type: types.login,
   payload: {
     uid,
     role,
     name,
-    photo
+    photo,
+    token,
+    active,
   },
 });
 

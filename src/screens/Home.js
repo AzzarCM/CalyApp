@@ -1,27 +1,40 @@
 import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {Avatar, Text, Menu, TouchableRipple} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
-import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
-import {logout} from '../redux/actions/auth';
-import HomeItem from '../components/HomeItem';
+import {useNavigation} from '@react-navigation/native';
 
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
+import {logout, updateUser} from '../redux/actions/auth';
+import HomeItem from '../components/HomeItem';
 import AnalisisImage from '../assets/analisis.png';
 import EstudiantesImage from '../assets/estudiantes.png';
 import ResultadosImage from '../assets/resultados.png';
 import EditarImage from '../assets/editar.png';
 import VocabularioImage from '../assets/vocabulario.png';
+import { getStudentById } from '../api/student';
 
 const Home = () => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
+  const {uid, name, photo, role, token} = useSelector(state => state.auth);
+
+  useEffect(() => {
+    if(uid && token) {
+      getStudentById(uid, token)
+      .then(( response ) => {
+        if(response.ok){
+          const {active, name, photo} = response.user;
+          dispatch(updateUser({ active, name, photo }));
+        }
+      })
+    }
+  }, []);
 
   const openMenu = () => setVisible(true);
-
   const closeMenu = () => setVisible(false);
-
-  const {name, photo, role} = useSelector(state => state.auth);
-  const dispatch = useDispatch();
 
   const userLogout = () => {
     dispatch(logout());
@@ -70,7 +83,7 @@ const Home = () => {
         <HomeItem
           title="Editar perfil"
           image={EditarImage}
-          onPress={() => console.log('press')}
+          onPress={() => navigation.navigate('EditProfile')}
         />
       </ScrollView>
     </SafeAreaView>
