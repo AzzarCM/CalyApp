@@ -6,7 +6,9 @@ import ImagePicker from '../components/ImagePicker/ImagePicker';
 import FormInput from '../components/Inputs/FormInput';
 import Button from '../components/Button';
 import {updateStudentProfile} from '../redux/actions/auth';
-import { fileUpload } from '../utils/file-upload';
+import {fileUpload} from '../utils/file-upload';
+import {validUpdateProfile} from '../utils/valid-forms';
+import Popup from '../components/Modals/Popup';
 
 const EditProfile = ({navigation}) => {
   const dispatch = useDispatch();
@@ -26,14 +28,34 @@ const EditProfile = ({navigation}) => {
   }, [success]);
 
   const onUpdateProfile = async () => {
-    let source = null;
-    if(newPhoto !== photo) {
-      source = 'data:image/jpg;base64,' + newPhoto;
+    try {
+      const isValid = validUpdateProfile(newName, newPhoto);
+      if (isValid) {
+        let source = null;
+        if (newPhoto !== photo) {
+          source = 'data:image/jpg;base64,' + newPhoto;
+        }
+        dispatch(
+          updateStudentProfile(
+            uid,
+            token,
+            {
+              full_name: newName,
+              photo: newPhoto,
+            },
+            source,
+          ),
+        );
+      }
+    } catch ({ message }) {
+      Popup.show({
+				type: 'Danger',
+				title: '¡Oh no!',
+				textBody: message,
+				buttontext: 'Aceptar',
+				callback: () => Popup.hide(),
+			});
     }
-    dispatch(updateStudentProfile(uid, token, {
-      full_name: newName,
-      photo: newPhoto,
-    }, source));
   };
 
   return (

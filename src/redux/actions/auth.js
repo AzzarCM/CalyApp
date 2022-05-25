@@ -54,7 +54,7 @@ export const updateStudentProfile = (id, token, dataBody, newUrl) => {
           'Perfil actualizado exitosamente',
         );
       } else {
-        showToast('error', '¡Oh no!', 'Credenciales incorrectas');
+        showToast('error', '¡Oh no!', 'Ocurrió un error inesperado');
       }
       dispatch(finishLoading());
       dispatch(error());
