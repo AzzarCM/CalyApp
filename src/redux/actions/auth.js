@@ -5,6 +5,7 @@ import {error, finishLoading, startLoading, success} from './ui';
 import jwt_decode from 'jwt-decode';
 import {updateStudent} from '../../api/student';
 import { fileUpload } from '../../utils/file-upload';
+import { updateTeacher } from '../../api/teacher';
 
 export const startLoginEmailPassword = (email, password) => {
   return async (dispatch, getState) => {
@@ -25,9 +26,10 @@ export const startLoginEmailPassword = (email, password) => {
   };
 };
 
-export const updateStudentProfile = (id, token, dataBody, newUrl) => {
+export const updateStudentProfile = (id, token, dataBody, newUrl, type = 'student') => {
   return async (dispatch, getState) => {
     const {loading} = getState().ui;
+    const updateRequest = type === 'student' ? updateStudent : updateTeacher;
     if (!loading) {
       dispatch(error());
       dispatch(startLoading());
@@ -35,10 +37,11 @@ export const updateStudentProfile = (id, token, dataBody, newUrl) => {
       if(newUrl) {
         fileUrl = await fileUpload(newUrl);
       }
-      const response = await updateStudent(id, token, {
+      const response = await updateRequest(id, token, {
         ...dataBody,
         photo: fileUrl || dataBody.photo,
       });
+      console.log(response);
       if (response.ok) {
         dispatch(
           updateUser({
@@ -62,12 +65,13 @@ export const updateStudentProfile = (id, token, dataBody, newUrl) => {
   };
 };
 
+
 export const updateUser = newData => ({
   type: types.updateUser,
   payload: newData,
 });
 
-export const login = (uid, name, role, photo, token, active) => ({
+export const login = (uid, name, role, photo, token, active = true) => ({
   type: types.login,
   payload: {
     uid,

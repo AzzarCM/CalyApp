@@ -6,6 +6,7 @@ const initialState = {
   name: null,
   photo: null,
   token: null,
+  active: true,
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -18,6 +19,7 @@ export const authReducer = (state = initialState, action) => {
         name: action.payload.name,
         photo: action.payload.photo,
         token: action.payload.token,
+        active: action.payload.active,
       };
     case types.updateUser:
       return {

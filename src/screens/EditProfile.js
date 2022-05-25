@@ -1,25 +1,30 @@
 import {StyleSheet, View, SafeAreaView} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
+import ToggleSwitch from 'toggle-switch-react-native';
+
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import ImagePicker from '../components/ImagePicker/ImagePicker';
 import FormInput from '../components/Inputs/FormInput';
 import Button from '../components/Button';
 import {updateStudentProfile} from '../redux/actions/auth';
-import {fileUpload} from '../utils/file-upload';
 import {validUpdateProfile} from '../utils/valid-forms';
 import Popup from '../components/Modals/Popup';
 
-const EditProfile = ({navigation}) => {
+const EditProfile = ({route, navigation}) => {
+  const {isTeacher} = route.params;
   const dispatch = useDispatch();
-  const {photo, name, token, uid} = useSelector(state => state.auth);
+  const state = useSelector(state => state);
+  console.log(state)
+  const {photo, name, token, uid, active, role} = useSelector(state => state.auth);
   const {loading, success} = useSelector(state => state.ui);
   const [profileData, setProfileData] = useState({
     name: name,
     photo: photo,
+    active: active,
   });
 
-  const {name: newName, photo: newPhoto} = profileData;
+  const {name: newName, photo: newPhoto, active: newActive} = profileData;
 
   useEffect(() => {
     if (success) {
@@ -44,17 +49,18 @@ const EditProfile = ({navigation}) => {
               photo: newPhoto,
             },
             source,
+            role,
           ),
         );
       }
-    } catch ({ message }) {
+    } catch ({message}) {
       Popup.show({
-				type: 'Danger',
-				title: '¡Oh no!',
-				textBody: message,
-				buttontext: 'Aceptar',
-				callback: () => Popup.hide(),
-			});
+        type: 'Danger',
+        title: '¡Oh no!',
+        textBody: message,
+        buttontext: 'Aceptar',
+        callback: () => Popup.hide(),
+      });
     }
   };
 
@@ -71,6 +77,24 @@ const EditProfile = ({navigation}) => {
           value={newName}
           onChangeText={text => setProfileData({...profileData, name: text})}
         />
+        {isTeacher && (
+          <View style={styles.switchContainer}>
+            <ToggleSwitch
+              isOn={newActive}
+              onColor="#26C788"
+              offColor="#A9B3C1"
+              label="Activo:"
+              labelStyle={{
+                color: 'black',
+                fontFamily: 'Sora-Medium',
+                fontSize: 17,
+              }}
+              size="medium"
+              onToggle={isOn => setProfileData({...profileData, active: isOn})}
+            />
+          </View>
+        )}
+
         <View style={styles.btnContainer}>
           <Button text="guardar" onPress={onUpdateProfile} loading={loading} />
         </View>
@@ -90,6 +114,9 @@ const styles = StyleSheet.create({
   formContainer: {
     marginHorizontal: 20,
     marginTop: 20,
+  },
+  switchContainer: {
+    marginVertical: 25,
   },
   btnContainer: {
     marginHorizontal: 80,
