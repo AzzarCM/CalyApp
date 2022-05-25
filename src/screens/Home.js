@@ -13,7 +13,7 @@ import EstudiantesImage from '../assets/estudiantes.png';
 import ResultadosImage from '../assets/resultados.png';
 import EditarImage from '../assets/editar.png';
 import VocabularioImage from '../assets/vocabulario.png';
-import { getStudentById } from '../api/student';
+import {getStudentById} from '../api/student';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -22,14 +22,13 @@ const Home = () => {
   const {uid, name, photo, role, token} = useSelector(state => state.auth);
 
   useEffect(() => {
-    if(uid && token) {
-      getStudentById(uid, token)
-      .then(( response ) => {
-        if(response.ok){
+    if (uid && token) {
+      getStudentById(uid, token).then(response => {
+        if (response.ok) {
           const {active, name, photo} = response.user;
-          dispatch(updateUser({ active, name, photo }));
+          dispatch(updateUser({active, name, photo}));
         }
-      })
+      });
     }
   }, []);
 
@@ -83,7 +82,7 @@ const Home = () => {
         <HomeItem
           title="Editar perfil"
           image={EditarImage}
-          onPress={() => navigation.navigate('EditProfile')}
+          onPress={() => navigation.navigate('EditProfile', {isTeacher: false})}
         />
       </ScrollView>
     </SafeAreaView>
@@ -136,5 +135,5 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: 20,
     paddingBottom: 30,
-  }
+  },
 });

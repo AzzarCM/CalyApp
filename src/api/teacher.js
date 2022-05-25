@@ -1,6 +1,6 @@
 import database from './database';
 
-export async function getStudentById(id, token) {
+export async function getTeacherById(id, token) {
   try {
     if (!id) {
       throw new Error('El id no puede estar vacío');
@@ -9,7 +9,7 @@ export async function getStudentById(id, token) {
       throw new Error('El token no puede estar vacío');
     }
 
-    const {data: response} = await database.get(`/student/${id}`, {
+    const {data: response} = await database.get(`/teacher/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -36,7 +36,7 @@ export async function getStudentById(id, token) {
 }
 
 
-export async function updateStudent(id, token, dataBody) {
+export async function updateTeacher(id, token, dataBody) {
   try {
     if (!id) {
       throw new Error('El id no puede estar vacío');
@@ -45,7 +45,7 @@ export async function updateStudent(id, token, dataBody) {
       throw new Error('El token no puede estar vacío');
     }
 
-    const {data: response} = await database.put(`/student/${id}`, dataBody, {
+    const {data: response} = await database.put(`/teacher/${id}`, dataBody, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -69,4 +69,3 @@ export async function updateStudent(id, token, dataBody) {
     }
   }
 }
-
