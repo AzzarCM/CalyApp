@@ -53,15 +53,16 @@ export default function TeacherStack() {
           },
           headerBackImage: () => buttonLeft(),
           headerStyle: {
-            backgroundColor: '#FBF5F2'
+            backgroundColor: '#FBF5F2',
           },
         }}
       />
-       <Stack.Screen
-        name='StudentResults'
+      <Stack.Screen
+        name="StudentResults"
         component={CaligrafyResults}
-        options={{
-          title: 'Resultados',
+        options={({route}) => ({
+          title:
+            route.params.name === undefined ? 'Resultados' : route.params.name,
           headerTitleAlign: 'center',
           headerTitleStyle: {
             fontSize: 22,
@@ -69,12 +70,12 @@ export default function TeacherStack() {
           },
           headerBackImage: () => buttonLeft(),
           headerStyle: {
-            backgroundColor: '#FBF5F2'
+            backgroundColor: '#FBF5F2',
           },
-        }}
+        })}
       />
       <Stack.Screen
-        name='Students'
+        name="Students"
         component={Students}
         options={{
           title: 'Estudiantes',
@@ -85,7 +86,7 @@ export default function TeacherStack() {
           },
           headerBackImage: () => buttonLeft(),
           headerStyle: {
-            backgroundColor: '#FBF5F2'
+            backgroundColor: '#FBF5F2',
           },
         }}
       />

@@ -81,7 +81,7 @@ const Home = () => {
         <HomeItem
           title="Resultados"
           image={ResultadosImage}
-          onPress={() => navigation.navigate('StudentResults')}
+          onPress={() => navigation.navigate('StudentResults', {name: 'Resultados'})}
         />
         <HomeItem
           title="Editar perfil"

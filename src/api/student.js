@@ -74,14 +74,14 @@ export const getAllStudents = async (token) => {
     if (!token) {
       throw new Error('El token no puede estar vacío');
     }
-    const {data: response} = await database.get('/student/', {
+    const { data } = await database.get('/student/', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
     return {
       ok: true,
-      data: response,
+      response: data,
     };
   } catch (error) {
     if (error.response) {
