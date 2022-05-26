@@ -72,7 +72,11 @@ const Home = () => {
         <HomeItem
           title={role === 'teacher' ? 'Estudiantes' : 'Vocabulario'}
           image={role === 'teacher' ? EstudiantesImage : VocabularioImage}
-          onPress={() => console.log('press')}
+          onPress={
+            role === 'teacher'
+              ? () => navigation.navigate('Students')
+              : () => console.log('hi')
+          }
         />
         <HomeItem
           title="Resultados"
