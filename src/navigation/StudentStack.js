@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import Home from '../screens/Home';
 import EditProfile from '../screens/EditProfile';
 import HandwritingAnalysis from '../screens/HandwritingAnalysis';
+import CaligrafyResults from '../screens/CaligrafyResults';
 
 const Stack = createStackNavigator();
 
@@ -45,6 +46,22 @@ export default function StudentStack() {
         component={HandwritingAnalysis}
         options={{
           title: 'Análisis caligráfico',
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            fontSize: 22,
+            fontFamily: 'Sora-Medium',
+          },
+          headerBackImage: () => buttonLeft(),
+          headerStyle: {
+            backgroundColor: '#FBF5F2'
+          },
+        }}
+      />
+      <Stack.Screen
+        name='StudentResults'
+        component={CaligrafyResults}
+        options={{
+          title: 'Resultados',
           headerTitleAlign: 'center',
           headerTitleStyle: {
             fontSize: 22,
