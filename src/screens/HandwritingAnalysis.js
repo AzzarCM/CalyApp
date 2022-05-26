@@ -36,7 +36,6 @@ const HandwritingAnalysis = ({navigation, route}) => {
     original_image: null,
     id_user: uid,
   });
-  console.log(formAnalysis)
   const {word, original_image, id_user} = formAnalysis;
 
   useEffect(() => {
