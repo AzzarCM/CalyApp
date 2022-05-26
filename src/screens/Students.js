@@ -31,8 +31,6 @@ const Students = ({navigation}) => {
     fetchData();
   }, []);
 
-  if (loading) return <Spinner />;
-
   return (
     <SafeAreaView style={styles.mainContainer}>
       <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#FBF5F2" />
