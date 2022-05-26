@@ -6,6 +6,7 @@ import EditProfile from '../screens/EditProfile';
 import HandwritingAnalysis from '../screens/HandwritingAnalysis';
 import CaligrafyResults from '../screens/CaligrafyResults';
 import Vocabulario from '../screens/Vocabulario';
+import VocabularioDetail from '../screens/VocabularioDetail';
 
 const Stack = createStackNavigator();
 
@@ -79,6 +80,22 @@ export default function StudentStack() {
         component={Vocabulario}
         options={({route}) => ({
           title: route.params.vocabularyTitle,
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            fontSize: 22,
+            fontFamily: 'Sora-Medium',
+          },
+          headerBackImage: () => buttonLeft(),
+          headerStyle: {
+            backgroundColor: '#FBF5F2'
+          },
+        })}
+      />
+      <Stack.Screen
+        name='VocabularioDetail'
+        component={VocabularioDetail}
+        options={({route}) => ({
+          title: route.params.palabra,
           headerTitleAlign: 'center',
           headerTitleStyle: {
             fontSize: 22,

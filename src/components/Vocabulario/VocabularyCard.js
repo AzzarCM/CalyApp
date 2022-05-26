@@ -2,14 +2,19 @@ import {StyleSheet, Text, View, Image} from 'react-native';
 import DetailButton from '../Buttons/DetailButton';
 import React from 'react';
 
-const VocabularyCard = ({image, text}) => {
+const VocabularyCard = ({image, text, navigation}) => {
   return (
     <View style={styles.cardWidth}>
       <View style={styles.mainContainer}>
         <Image style={styles.img} source={image} />
         <View style={styles.rightContainer}>
           <Text style={styles.txt}>{text}</Text>
-          <DetailButton text="Ver más" onPress={() => console.log('hi')}/>
+          <DetailButton
+            text="Ver más"
+            onPress={() =>
+              navigation.navigate('VocabularioDetail', {palabra: text, image})
+            }
+          />
         </View>
       </View>
       <View style={styles.line}></View>
@@ -40,7 +45,7 @@ const styles = StyleSheet.create({
     marginBottom: 18,
   },
   rightContainer: {
-    marginLeft: 30
+    marginLeft: 30,
   },
   line: {
     height: 1,

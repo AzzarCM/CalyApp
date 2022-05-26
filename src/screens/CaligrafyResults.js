@@ -2,8 +2,7 @@ import {StyleSheet, SafeAreaView, ScrollView} from 'react-native';
 import React from 'react';
 import ResultComponent from '../components/Result/ResultWithPercentageIndicator'
 
-export default function CaligrafyResults({route}) {
-  console.log(route)
+export default function CaligrafyResults() {
   return (
     <SafeAreaView style={styles.mainContainer}>
       <ScrollView contentContainerStyle={styles.container}>

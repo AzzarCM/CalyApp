@@ -67,7 +67,7 @@ const Home = () => {
         <HomeItem
           title="Analisis caligrafico"
           image={AnalisisImage}
-          onPress={() => navigation.navigate('HandwritingAnalysis')}
+          onPress={() => navigation.navigate('HandwritingAnalysis', {palabra: ''})}
         />
         <HomeItem
           title={role === 'teacher' ? 'Estudiantes' : 'Vocabulario'}
