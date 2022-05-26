@@ -1,39 +1,64 @@
-import {StyleSheet, Text, View, SafeAreaView, ScrollView} from 'react-native';
+import {StyleSheet, Text, View, SafeAreaView, FlatList} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {getAllStudents} from '../api/student';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import StudentCard from '../components/Student/StudentCard';
 import Button from '../components/Button';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
+import Spinner from '../components/Spinner';
+import {finishLoading, startLoading} from '../redux/actions/ui';
+import Message from '../components/Message';
 
 const Students = ({navigation}) => {
   const [students, setStudents] = useState([]);
-  const {token, role} = useSelector(state => state.auth);
+  const {token, role, uid} = useSelector(state => state.auth);
+  const {loading} = useSelector(state => state.ui);
+
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const fetchData = async () => {
-      const {response} = await getAllStudents(token);
-      const {data, status_code} = response;
-      if (status_code === 200) setStudents(data);
+      dispatch(startLoading());
+      const response = await getAllStudents(uid, token);
+      if (response.ok) {
+        const {
+          response: {data},
+        } = response;
+        setStudents(data);
+      }
+      dispatch(finishLoading());
     };
     fetchData();
   }, []);
 
-  if (!students) return null;
+  if (loading) return <Spinner />;
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {students &&
-          students.map((item, index) => (
-            <StudentCard key={index} navigation={navigation} student={item} />
-          ))}
-      </ScrollView>
-      {role === 'teacher' && (
-        <View style={styles.btnContainer}>
-          <Button
-            text="Crear un estudiante"
-            onPress={() => console.log('hi')}
-          />
-        </View>
+      <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#FBF5F2" />
+      {loading ? (
+        <Spinner />
+      ) : (
+        <>
+          <View style={styles.btnContainer}>
+            <Button
+              text="Crear un estudiante"
+              onPress={() => navigation.navigate('CreateStudent')}
+            />
+          </View>
+          {students.length > 0 ? (
+            <View style={styles.scrollContainer}>
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                data={students}
+                renderItem={({item}) => <StudentCard student={item} />}
+                keyExtractor={item => item.id}
+              />
+            </View>
+          ) : (
+            <Message text="No tienes estudiantes" />
+          )}
+        </>
       )}
     </SafeAreaView>
   );
@@ -48,11 +73,14 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     paddingVertical: 20,
-    alignItems: 'center',
+    height: '85%',
+    paddingBottom: 20,
   },
   btnContainer: {
     width: '85%',
     alignSelf: 'center',
     marginBottom: 40,
+    position: 'absolute',
+    bottom: 0,
   },
 });

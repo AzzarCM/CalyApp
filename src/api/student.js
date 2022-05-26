@@ -69,12 +69,12 @@ export async function updateStudent(id, token, dataBody) {
   }
 }
 
-export const getAllStudents = async (token) => {
+export const getAllStudents = async (id, token) => {
   try {
     if (!token) {
       throw new Error('El token no puede estar vacío');
     }
-    const { data } = await database.get('/student/', {
+    const { data } = await database.get(`/student/teacher/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
