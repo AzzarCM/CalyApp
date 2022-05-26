@@ -10,6 +10,7 @@ import {finishLoading, startLoading} from '../redux/actions/ui';
 import Spinner from '../components/Spinner';
 
 export default function CaligrafyResults({route}) {
+  const { idStudent } = route.params; 
   const dispatch = useDispatch();
   const {uid, token} = useSelector(state => state.auth);
   const {loading} = useSelector(state => state.ui);
@@ -17,7 +18,8 @@ export default function CaligrafyResults({route}) {
 
   useEffect(() => {
     dispatch(startLoading());
-    getResultsById(uid, token).then(response => {
+    const id = idStudent || uid;
+    getResultsById(id, token).then(response => {
       if (response.ok) {
         setResults(response.data);
       } else {

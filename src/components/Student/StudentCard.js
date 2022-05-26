@@ -2,9 +2,11 @@ import {StyleSheet, Text, View, Image} from 'react-native';
 import React from 'react';
 import {TouchableRipple} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useNavigation } from '@react-navigation/native';
 
-const StudentCard = ({student, navigation}) => {
+const StudentCard = ({student}) => {
   const {name, photo, id} = student;
+  const navigation = useNavigation();
   return (
     <View style={styles.containerPerfil}>
       <View style={styles.imgplusname}>
@@ -15,7 +17,6 @@ const StudentCard = ({student, navigation}) => {
           <Text numberOfLines={1} style={styles.displayName}>
             {name}
           </Text>
-          <Text style={styles.label}>Ver estudiante</Text>
         </View>
         <View />
       </View>
@@ -39,14 +40,16 @@ export default StudentCard;
 const styles = StyleSheet.create({
   containerPerfil: {
     borderRadius: 10,
-    marginTop: 30,
+    marginTop: 15,
     backgroundColor: '#FFF',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: '90%',
-    height: 63,
+    marginHorizontal: 20,
+    height: 70,
+    borderColor: '#E6E6E6',
+    borderWidth: 2,
   },
   image: {
     width: 45,
@@ -59,6 +62,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    maxWidth: '80%',
   },
   icon: {
     backgroundColor: '#fff',
@@ -71,8 +75,8 @@ const styles = StyleSheet.create({
   },
   displayName: {
     color: '#060948',
-    fontWeight: 'bold',
-    fontSize: 15,
+    fontFamily: 'Sora-Medium',
+    fontSize: 17,
   },
   label: {
     color: '#A6A7B2',
