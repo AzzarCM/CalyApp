@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, SafeAreaView, ScrollView} from 'react-native';
+import {StyleSheet, View, SafeAreaView, ScrollView} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {getAllStudents} from '../api/student';
 import {useSelector} from 'react-redux';
