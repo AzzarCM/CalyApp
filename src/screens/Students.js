@@ -1,7 +1,9 @@
 import {StyleSheet, Text, View, SafeAreaView, FlatList} from 'react-native';
 import React, {useState, useEffect} from 'react';
-import {getAllStudents} from '../api/student';
 import {useSelector, useDispatch} from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
+
+import {getAllStudents} from '../api/student';
 import StudentCard from '../components/Student/StudentCard';
 import Button from '../components/Button';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
@@ -10,6 +12,7 @@ import {finishLoading, startLoading} from '../redux/actions/ui';
 import Message from '../components/Message';
 
 const Students = ({navigation}) => {
+  const isFocused = useIsFocused();
   const [students, setStudents] = useState([]);
   const {token, role, uid} = useSelector(state => state.auth);
   const {loading} = useSelector(state => state.ui);
@@ -28,10 +31,10 @@ const Students = ({navigation}) => {
       }
       dispatch(finishLoading());
     };
-    fetchData();
-  }, []);
-
-  if (loading) return <Spinner />;
+    if(isFocused){
+      fetchData();
+    }
+  }, [isFocused]);
 
   return (
     <SafeAreaView style={styles.mainContainer}>

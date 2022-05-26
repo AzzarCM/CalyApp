@@ -21,6 +21,8 @@ target 'calyApp' do
 
   pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
+  pod 'TextToSpeech', :path => '../node_modules/react-native-tts'
+
   target 'calyAppTests' do
     inherit! :complete
     # Pods for testing

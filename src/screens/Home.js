@@ -4,6 +4,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {Avatar, Text, Menu, TouchableRipple} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
+import Tts from 'react-native-tts';
 
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import {logout, updateUser} from '../redux/actions/auth';
@@ -37,6 +38,8 @@ const Home = () => {
 
   const userLogout = () => {
     dispatch(logout());
+    // Tts.setDefaultLanguage('es-MX');
+    // Tts.speak('Sesión cerrada');
     closeMenu();
   };
 

@@ -9,19 +9,28 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/dist/Feather';
 
-const AuthInput = ({label, placeholder, secure = false, value, onChangeText}) => {
+const AuthInput = ({
+  label,
+  placeholder,
+  secure = false,
+  value,
+  onChangeText,
+  border = false,
+  type = 'default',
+}) => {
   const [showPassword, setShowPassword] = useState(!secure);
   return (
     <View style={styles.inputSection}>
       <Text style={styles.label}>{label}</Text>
       <View>
         <TextInput
-          style={styles.input}
+          style={[styles.input, border && styles.border]}
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}
           placeholderTextColor="#9B9B9B"
           secureTextEntry={!showPassword}
+          keyboardType={type}
         />
         {secure && (
           <TouchableOpacity
@@ -69,6 +78,10 @@ const styles = StyleSheet.create({
   icon: {
     fontSize: 25,
   },
+  border: {
+    borderColor: '#d9d7d7',
+    borderWidth: 2,
+  },
 });
 
 AuthInput.propTypes = {
@@ -77,4 +90,6 @@ AuthInput.propTypes = {
   secure: PropTypes.bool,
   value: PropTypes.string,
   onChangeText: PropTypes.func,
+  border: PropTypes.bool,
+  type: PropTypes.string,
 };
