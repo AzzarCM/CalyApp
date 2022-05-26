@@ -3,6 +3,7 @@ import {types} from '../types/types';
 const initialState = {
   loading: false,
   success: false,
+  reminder: true
 };
 
 export const uiReducer = (state = initialState, action) => {
@@ -27,6 +28,16 @@ export const uiReducer = (state = initialState, action) => {
         ...state,
         success: false,
       };
+    case types.setReminder:
+      return {
+        ...state,
+        reminder: true,
+      }
+    case types.deleteReminder:
+      return {
+        ...state,
+        reminder: false,
+      }
     default:
       return state;
   }

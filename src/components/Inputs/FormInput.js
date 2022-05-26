@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
 		fontSize: 17,
         backgroundColor: '#Fff',
         fontFamily: 'Sora-Regular',
+		color: '#000',
 	},
 	label: {
 		fontSize: 17,

@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     fontFamily: 'Sora-Regular',
     fontSize: 15,
+    color: '#000',
   },
   iconContainer: {
     position: 'absolute',

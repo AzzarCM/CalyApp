@@ -41,7 +41,7 @@ export const updateStudentProfile = (id, token, dataBody, newUrl, type = 'studen
         ...dataBody,
         photo: fileUrl || dataBody.photo,
       });
-      console.log(response);
+
       if (response.ok) {
         dispatch(
           updateUser({

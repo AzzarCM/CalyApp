@@ -6,4 +6,6 @@ export const types = {
 	finishLoading: '[UI] FINISH LOADING',
     success: '[UI] SUCCESS',
     error: '[UI] ERROR',
+    setReminder: '[REMINDER] SET_REMINDER',
+    deleteReminder: '[UI] DELETE REMINDER',
 }
