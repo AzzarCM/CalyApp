@@ -15,7 +15,7 @@ const EditProfile = ({route, navigation}) => {
   const {isTeacher} = route.params;
   const dispatch = useDispatch();
   const state = useSelector(state => state);
-  console.log(state)
+
   const {photo, name, token, uid, active, role} = useSelector(state => state.auth);
   const {loading, success} = useSelector(state => state.ui);
   const [profileData, setProfileData] = useState({

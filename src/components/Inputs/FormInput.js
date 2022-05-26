@@ -8,6 +8,7 @@ const FormInput = ({
 	value,
 	mandatory = false,
 	onChangeText,
+	placeholder = ""
 }) => {
 	return (
 		<View style={styles.container}>
@@ -22,6 +23,8 @@ const FormInput = ({
 				selectionColor="#060948"
 				style={styles.input}
 				value={value}
+				placeholder={placeholder}
+				placeholderTextColor="#9B9B9B"
 			/>
 		</View>
 	);
@@ -42,6 +45,7 @@ const styles = StyleSheet.create({
 		fontSize: 17,
         backgroundColor: '#Fff',
         fontFamily: 'Sora-Regular',
+		color: '#000',
 	},
 	label: {
 		fontSize: 17,
@@ -68,4 +72,5 @@ FormInput.propTypes = {
 	mandatory: PropTypes.bool,
 	onBlur: PropTypes.func,
 	onChangeText: PropTypes.func,
+	placeholder: PropTypes.string,
 };

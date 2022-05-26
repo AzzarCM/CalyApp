@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {launchImageLibrary} from 'react-native-image-picker';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import PickerModal from '@freakycoder/react-native-picker-modal';
 import PropTypes from 'prop-types';
+
 import ImageCard from './ImageCard';
 import ImageInput from './ImageInput';
 
@@ -11,13 +13,15 @@ const initialState = {
   base64: null,
 };
 
-const ImagePicker = ({urlImage = null, setImage}) => {
+const ImagePicker = ({urlImage = null, setImage, cardStyle = {}}) => {
   const [imageSelected, setImageSelected] = useState({
     ...initialState,
     fileUri: urlImage,
   });
 
-  const chooseOnePicture = () => {
+  const [isVisible, setisVisible] = useState(false);
+
+  const chooseOnePicture = method => {
     let options = {
       storageOptions: {
         skipBackup: true,
@@ -26,20 +30,43 @@ const ImagePicker = ({urlImage = null, setImage}) => {
       includeBase64: true,
       mediaType: 'photo',
     };
-    launchImageLibrary(options, response => {
+    method(options, response => {
       if (!response.didCancel && !response.error && !response.customButton) {
+        setisVisible(false);
         setImageSelected({
           filePath: response.assets[0],
           fileUri: response.assets[0].uri,
           base64: response.assets[0].base64,
         });
-		setImage(response.assets[0].base64);
+        setImage(response.assets[0].base64);
       }
     });
   };
 
   return (
     <>
+      <PickerModal
+        title="Puedes tomar una foto o seleccionar una de tu álbum."
+        isVisible={isVisible}
+        data={['Tomar una foto', 'Seleccionar de la galería']}
+        
+        onPress={selectedItem => {
+          switch (selectedItem) {
+            case 'Tomar una foto':
+              chooseOnePicture(launchCamera);
+              break;
+            default:
+              chooseOnePicture(launchImageLibrary);
+              break;
+          }
+        }}
+        onCancelPress={() => {
+          setisVisible(false);
+        }}
+        onBackdropPress={() => {
+          setisVisible(false);
+        }}
+      />
       {imageSelected.fileUri ? (
         <View style={styles.imageContainer}>
           <ImageCard
@@ -48,15 +75,16 @@ const ImagePicker = ({urlImage = null, setImage}) => {
               setImageSelected(initialState);
               setImage(null);
             }}
+            imageStyle={cardStyle}
           />
           <ImageInput
             label="Cambiar foto"
             type="card"
-            onPress={chooseOnePicture}
+            onPress={() => setisVisible(true)}
           />
         </View>
       ) : (
-        <ImageInput label="Agregar foto" onPress={chooseOnePicture} />
+        <ImageInput label="Agregar foto" onPress={() => setisVisible(true)} />
       )}
     </>
   );
