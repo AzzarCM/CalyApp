@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   textHeader: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   date: {
     backgroundColor: '#AED5FF',
@@ -75,6 +75,6 @@ const styles = StyleSheet.create({
     width: 40,
     textAlign: 'center',
     color: '#fff',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   }
 });

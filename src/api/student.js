@@ -35,7 +35,6 @@ export async function getStudentById(id, token) {
   }
 }
 
-
 export async function updateStudent(id, token, dataBody) {
   try {
     if (!id) {
@@ -70,3 +69,32 @@ export async function updateStudent(id, token, dataBody) {
   }
 }
 
+export const getAllStudents = async (token) => {
+  try {
+    if (!token) {
+      throw new Error('El token no puede estar vacío');
+    }
+    const { data } = await database.get('/student/', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return {
+      ok: true,
+      response: data,
+    };
+  } catch (error) {
+    if (error.response) {
+      const {detail} = error?.response?.data;
+      return {
+        ok: false,
+        error: detail,
+      };
+    } else if (error.message) {
+      return {
+        ok: false,
+        error: error.message,
+      };
+    }
+  }
+};

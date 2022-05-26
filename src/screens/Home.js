@@ -72,12 +72,16 @@ const Home = () => {
         <HomeItem
           title={role === 'teacher' ? 'Estudiantes' : 'Vocabulario'}
           image={role === 'teacher' ? EstudiantesImage : VocabularioImage}
-          onPress={() => console.log('press')}
+          onPress={
+            role === 'teacher'
+              ? () => navigation.navigate('Students')
+              : () => console.log('hi')
+          }
         />
         <HomeItem
           title="Resultados"
           image={ResultadosImage}
-          onPress={() => navigation.navigate('StudentResults')}
+          onPress={() => navigation.navigate('StudentResults', {name: 'Resultados'})}
         />
         <HomeItem
           title="Editar perfil"
