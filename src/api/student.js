@@ -69,12 +69,12 @@ export async function updateStudent(id, token, dataBody) {
   }
 }
 
-export const getAllStudents = async (token) => {
+export const getAllStudents = async (id, token) => {
   try {
     if (!token) {
       throw new Error('El token no puede estar vacío');
     }
-    const { data } = await database.get('/student/', {
+    const { data } = await database.get(`/student/teacher/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -98,3 +98,34 @@ export const getAllStudents = async (token) => {
     }
   }
 };
+
+export async function createStudent(dataBody, token) {
+  try {
+    if (!token) {
+      throw new Error('El token no puede estar vacío');
+    }
+
+    const {data: response} = await database.post('/student/new', dataBody, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return {
+      ok: true,
+      user: response,
+    };
+  } catch (error) {
+    if (error.response) {
+      const {detail} = error?.response?.data;
+      return {
+        ok: false,
+        error: detail,
+      };
+    } else if (error.message) {
+      return {
+        ok: false,
+        error: error.message,
+      };
+    }
+  }
+}

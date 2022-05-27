@@ -4,7 +4,6 @@ import {useSelector, useDispatch} from 'react-redux';
 import {Avatar, Text, Menu, TouchableRipple} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
-
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import {logout, updateUser} from '../redux/actions/auth';
 import HomeItem from '../components/HomeItem';
@@ -55,7 +54,7 @@ const Home = () => {
             visible={visible}
             onDismiss={closeMenu}
             anchor={<Icon name="menu" color="#060948" size={30} />}>
-            <Menu.Item onPress={userLogout} title="Cerrar sesion" />
+            <Menu.Item icon={() => <Icon name="log-out" color="#060948" size={25} />} onPress={userLogout} title="Cerrar sesion" />
           </Menu>
         </TouchableRipple>
       </View>

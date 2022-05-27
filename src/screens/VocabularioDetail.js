@@ -2,17 +2,23 @@ import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Button from '../components/Button';
+import Tts from 'react-native-tts';
 
 const VocabularioDetail = ({route, navigation}) => {
   const {params} = route;
   const {palabra, image} = params;
+
+  const speak = () => {
+    Tts.setDefaultLanguage('es-MX');
+    Tts.speak(palabra);
+  }
   return (
     <View style={styles.mainContainer}>
       <View style={styles.container}>
         <Image style={styles.img} source={image} />
         <View style={styles.soundDiv}>
           <Text style={styles.palabra}>{palabra}</Text>
-          <TouchableOpacity style={styles.soundIcon}>
+          <TouchableOpacity onPress={speak} style={styles.soundIcon}>
             <Icon name="sound" size={25} color="#000" />
           </TouchableOpacity>
         </View>

@@ -6,6 +6,7 @@ import EditProfile from '../screens/EditProfile';
 import HandwritingAnalysis from '../screens/HandwritingAnalysis';
 import CaligrafyResults from '../screens/CaligrafyResults';
 import Students from '../screens/Students';
+import CreateStudent from '../screens/CreateStudent';
 
 const Stack = createStackNavigator();
 
@@ -79,6 +80,22 @@ export default function TeacherStack() {
         component={Students}
         options={{
           title: 'Estudiantes',
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            fontSize: 22,
+            fontFamily: 'Sora-Medium',
+          },
+          headerBackImage: () => buttonLeft(),
+          headerStyle: {
+            backgroundColor: '#FBF5F2',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="CreateStudent"
+        component={CreateStudent}
+        options={{
+          title: 'Crear estudiante',
           headerTitleAlign: 'center',
           headerTitleStyle: {
             fontSize: 22,
