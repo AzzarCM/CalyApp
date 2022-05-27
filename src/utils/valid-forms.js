@@ -19,7 +19,7 @@ export const validUpdateProfile = (email, photo) => {
 }
 
 export const validCreateAnalysis = (word, photo, id_student) => {
-	if (validator.isEmpty(email.trim()))
+	if (validator.isEmpty(word.trim()))
 		throw new Error('Palabra es requerida');
 	else if(!photo || photo.length < 1){
 		throw new Error('Debes de seleccionar una imagen');
