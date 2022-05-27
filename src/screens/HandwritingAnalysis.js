@@ -24,18 +24,18 @@ import PenImage from '../assets/lapicero.png';
 import LetterImage from '../assets/letra.png';
 import {showToast} from '../utils/utils';
 
-const HandwritingAnalysis = ({navigation}) => {
+const HandwritingAnalysis = ({navigation, route}) => {
+  const { params } = route;
+  const { palabra } = params 
   const {uid, token} = useSelector(state => state.auth);
   const {loading, success: done, reminder} = useSelector(state => state.ui);
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(reminder);
-
   const [formAnalysis, setformAnalysis] = useState({
-    word: '',
+    word: palabra,
     original_image: null,
     id_user: uid,
   });
-
   const {word, original_image, id_user} = formAnalysis;
 
   useEffect(() => {

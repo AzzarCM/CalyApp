@@ -2,7 +2,6 @@ import {StyleSheet, Text, View, SafeAreaView, FlatList} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
-
 import {getAllStudents} from '../api/student';
 import StudentCard from '../components/Student/StudentCard';
 import Button from '../components/Button';

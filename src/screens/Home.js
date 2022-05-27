@@ -4,8 +4,6 @@ import {useSelector, useDispatch} from 'react-redux';
 import {Avatar, Text, Menu, TouchableRipple} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
-import Tts from 'react-native-tts';
-
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import {logout, updateUser} from '../redux/actions/auth';
 import HomeItem from '../components/HomeItem';
@@ -38,8 +36,6 @@ const Home = () => {
 
   const userLogout = () => {
     dispatch(logout());
-    // Tts.setDefaultLanguage('es-MX');
-    // Tts.speak('Sesión cerrada');
     closeMenu();
   };
 
@@ -70,7 +66,7 @@ const Home = () => {
         <HomeItem
           title="Analisis caligrafico"
           image={AnalisisImage}
-          onPress={() => navigation.navigate('HandwritingAnalysis')}
+          onPress={() => navigation.navigate('HandwritingAnalysis', {palabra: ''})}
         />
         <HomeItem
           title={role === 'teacher' ? 'Estudiantes' : 'Vocabulario'}
@@ -78,13 +74,18 @@ const Home = () => {
           onPress={
             role === 'teacher'
               ? () => navigation.navigate('Students')
-              : () => console.log('hi')
+              : () =>
+                  navigation.navigate('Vocabulario', {
+                    vocabularyTitle: 'Vocabulario',
+                  })
           }
         />
         <HomeItem
           title="Resultados"
           image={ResultadosImage}
-          onPress={() => navigation.navigate('StudentResults', {name: 'Resultados'})}
+          onPress={() =>
+            navigation.navigate('StudentResults', {name: 'Resultados'})
+          }
         />
         <HomeItem
           title="Editar perfil"
