@@ -6,6 +6,7 @@ const initialState = {
   name: null,
   photo: null,
   token: null,
+  email: null,
   active: true,
 };
 

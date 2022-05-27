@@ -16,15 +16,15 @@ const EditProfile = ({route, navigation}) => {
   const dispatch = useDispatch();
   const state = useSelector(state => state);
 
-  const {photo, name, token, uid, active, role} = useSelector(state => state.auth);
+  const {photo, email, token, uid, active, role} = useSelector(state => state.auth);
   const {loading, success} = useSelector(state => state.ui);
   const [profileData, setProfileData] = useState({
-    name: name,
+    email,
     photo: photo,
     active: active,
   });
 
-  const {name: newName, photo: newPhoto, active: newActive} = profileData;
+  const {email: newEmail, photo: newPhoto, active: newActive} = profileData;
 
   useEffect(() => {
     if (success) {
@@ -34,7 +34,7 @@ const EditProfile = ({route, navigation}) => {
 
   const onUpdateProfile = async () => {
     try {
-      const isValid = validUpdateProfile(newName, newPhoto);
+      const isValid = validUpdateProfile(newEmail, newPhoto);
       if (isValid) {
         let source = null;
         if (newPhoto !== photo) {
@@ -45,7 +45,7 @@ const EditProfile = ({route, navigation}) => {
             uid,
             token,
             {
-              full_name: newName,
+              email: newEmail,
               photo: newPhoto,
             },
             source,
@@ -73,9 +73,9 @@ const EditProfile = ({route, navigation}) => {
           setImage={img => setProfileData({...profileData, photo: img})}
         />
         <FormInput
-          label="Nombre: "
-          value={newName}
-          onChangeText={text => setProfileData({...profileData, name: text})}
+          label="Email: "
+          value={newEmail}
+          onChangeText={text => setProfileData({...profileData, email: text})}
         />
         {isTeacher && (
           <View style={styles.switchContainer}>

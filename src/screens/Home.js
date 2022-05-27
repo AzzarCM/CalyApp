@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {Avatar, Text, Menu, TouchableRipple} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useIsFocused} from '@react-navigation/native';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import {logout, updateUser} from '../redux/actions/auth';
 import HomeItem from '../components/HomeItem';
@@ -14,24 +14,38 @@ import EditarImage from '../assets/editar.png';
 import VocabularioImage from '../assets/vocabulario.png';
 import {getStudentById} from '../api/student';
 import ConfirmModal from '../components/Modals/ConfirmModal';
+import Popup from '../components/Modals/Popup';
 
 const Home = () => {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const {uid, name, photo, role, token} = useSelector(state => state.auth);
 
   useEffect(() => {
-    if (uid && token) {
+    if (isFocused && uid && token) {
       getStudentById(uid, token).then(response => {
         if (response.ok) {
-          const {active, name, photo} = response.user;
-          dispatch(updateUser({active, name, photo}));
+          const {active, name, photo, email} = response.user;
+          if (!active) {
+            Popup.show({
+              type: 'Danger',
+              title: '¡Oh no!',
+              textBody: 'Tu cuenta ha sido desactivada',
+              buttontext: 'Aceptar',
+              callback: () => {
+                Popup.hide();
+                userLogout();
+              },
+            });
+          }
+          dispatch(updateUser({active, name, photo, email}));
         }
       });
     }
-  }, []);
+  }, [isFocused]);
 
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
