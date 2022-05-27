@@ -1,18 +1,21 @@
 import {StyleSheet, Text, View, Image} from 'react-native';
 import DetailButton from '../Buttons/DetailButton';
 import React from 'react';
+import {useNavigation} from '@react-navigation/native';
 
-const VocabularyCard = ({image, text, navigation}) => {
+const VocabularyCard = ({ item}) => {
+  const { word, image } = item;
+  const navigation = useNavigation();
   return (
     <View style={styles.cardWidth}>
       <View style={styles.mainContainer}>
-        <Image style={styles.img} source={image} />
+        <Image style={styles.img} source={{ uri: image }} />
         <View style={styles.rightContainer}>
-          <Text style={styles.txt}>{text}</Text>
+          <Text style={styles.txt}>{word}</Text>
           <DetailButton
             text="Ver más"
             onPress={() =>
-              navigation.navigate('VocabularioDetail', {palabra: text, image})
+              navigation.navigate('VocabularioDetail', { word, image})
             }
           />
         </View>
@@ -26,7 +29,7 @@ export default VocabularyCard;
 
 const styles = StyleSheet.create({
   cardWidth: {
-    width: '90%',
+    width: '100%',
     marginBottom: 20,
   },
   mainContainer: {
@@ -43,6 +46,8 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
     fontFamily: 'Sora-SemiBold',
     marginBottom: 18,
+    fontSize: 17,
+    color: '#3D3D3D',
   },
   rightContainer: {
     marginLeft: 30,

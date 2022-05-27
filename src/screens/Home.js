@@ -13,11 +13,13 @@ import ResultadosImage from '../assets/resultados.png';
 import EditarImage from '../assets/editar.png';
 import VocabularioImage from '../assets/vocabulario.png';
 import {getStudentById} from '../api/student';
+import ConfirmModal from '../components/Modals/ConfirmModal';
 
 const Home = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const {uid, name, photo, role, token} = useSelector(state => state.auth);
 
   useEffect(() => {
@@ -42,6 +44,12 @@ const Home = () => {
   return (
     <SafeAreaView style={styles.mainContainer}>
       <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#FBF5F2" />
+      <ConfirmModal
+        visible={modalVisible}
+        setVisible={setModalVisible}
+        onPress={userLogout}
+        title="¿Desea cerrar sesión?"
+      />
       <View style={styles.header}>
         <Avatar.Image
           size={55}
@@ -54,7 +62,14 @@ const Home = () => {
             visible={visible}
             onDismiss={closeMenu}
             anchor={<Icon name="menu" color="#060948" size={30} />}>
-            <Menu.Item icon={() => <Icon name="log-out" color="#060948" size={25} />} onPress={userLogout} title="Cerrar sesion" />
+            <Menu.Item
+              icon={() => <Icon name="log-out" color="#060948" size={25} />}
+              onPress={() => {
+                closeMenu();
+                setModalVisible(true);
+              }}
+              title="Cerrar sesion"
+            />
           </Menu>
         </TouchableRipple>
       </View>
@@ -66,7 +81,9 @@ const Home = () => {
         <HomeItem
           title="Analisis caligrafico"
           image={AnalisisImage}
-          onPress={() => navigation.navigate('HandwritingAnalysis', {palabra: ''})}
+          onPress={() =>
+            navigation.navigate('HandwritingAnalysis', {palabra: ''})
+          }
         />
         <HomeItem
           title={role === 'teacher' ? 'Estudiantes' : 'Vocabulario'}
