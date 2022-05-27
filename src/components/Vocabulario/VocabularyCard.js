@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
     width: 160,
     height: 90,
     borderRadius: 10,
+    backgroundColor: '#e1e4e8',
   },
   txt: {
     textTransform: 'capitalize',
