@@ -19,7 +19,7 @@ export const startLoginEmailPassword = (email, password) => {
         dispatch(login(id, name, role, photo, token, active));
         showToast('success', '¡Bienvenido!', 'Iniciaste sesión correctamente');
       } else {
-        showToast('error', '¡Oh no!', 'Credenciales incorrectas');
+        showToast('error', '¡Oh no!', response.error);
       }
       dispatch(finishLoading());
     }
@@ -46,7 +46,6 @@ export const updateStudentProfile = (id, token, dataBody, newUrl, type = 'studen
         dispatch(
           updateUser({
             ...dataBody,
-            name: dataBody.full_name,
             photo: fileUrl || dataBody.photo,
           }),
         );

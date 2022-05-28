@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {Avatar, Text, Menu, TouchableRipple} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useIsFocused} from '@react-navigation/native';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import {logout, updateUser} from '../redux/actions/auth';
 import HomeItem from '../components/HomeItem';
@@ -13,23 +13,39 @@ import ResultadosImage from '../assets/resultados.png';
 import EditarImage from '../assets/editar.png';
 import VocabularioImage from '../assets/vocabulario.png';
 import {getStudentById} from '../api/student';
+import ConfirmModal from '../components/Modals/ConfirmModal';
+import Popup from '../components/Modals/Popup';
 
 const Home = () => {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const {uid, name, photo, role, token} = useSelector(state => state.auth);
 
   useEffect(() => {
-    if (uid && token) {
+    if (isFocused && uid && token) {
       getStudentById(uid, token).then(response => {
         if (response.ok) {
-          const {active, name, photo} = response.user;
-          dispatch(updateUser({active, name, photo}));
+          const {active, name, photo, email} = response.user;
+          if (!active) {
+            Popup.show({
+              type: 'Danger',
+              title: '¡Oh no!',
+              textBody: 'Tu cuenta ha sido desactivada',
+              buttontext: 'Aceptar',
+              callback: () => {
+                Popup.hide();
+                userLogout();
+              },
+            });
+          }
+          dispatch(updateUser({active, name, photo, email}));
         }
       });
     }
-  }, []);
+  }, [isFocused]);
 
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
@@ -42,6 +58,12 @@ const Home = () => {
   return (
     <SafeAreaView style={styles.mainContainer}>
       <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#FBF5F2" />
+      <ConfirmModal
+        visible={modalVisible}
+        setVisible={setModalVisible}
+        onPress={userLogout}
+        title="¿Desea cerrar sesión?"
+      />
       <View style={styles.header}>
         <Avatar.Image
           size={55}
@@ -54,7 +76,14 @@ const Home = () => {
             visible={visible}
             onDismiss={closeMenu}
             anchor={<Icon name="menu" color="#060948" size={30} />}>
-            <Menu.Item icon={() => <Icon name="log-out" color="#060948" size={25} />} onPress={userLogout} title="Cerrar sesion" />
+            <Menu.Item
+              icon={() => <Icon name="log-out" color="#060948" size={25} />}
+              onPress={() => {
+                closeMenu();
+                setModalVisible(true);
+              }}
+              title="Cerrar sesion"
+            />
           </Menu>
         </TouchableRipple>
       </View>
@@ -66,7 +95,9 @@ const Home = () => {
         <HomeItem
           title="Analisis caligrafico"
           image={AnalisisImage}
-          onPress={() => navigation.navigate('HandwritingAnalysis', {palabra: ''})}
+          onPress={() =>
+            navigation.navigate('HandwritingAnalysis', {palabra: ''})
+          }
         />
         <HomeItem
           title={role === 'teacher' ? 'Estudiantes' : 'Vocabulario'}

@@ -1,12 +1,17 @@
+import validator from 'validator';
+
 export const validLogin = (username, password) => {
-	if (username.length < 1 || password.length < 1)
+	if (validator.isEmpty(username.trim()) || validator.isEmpty(password.trim()))
 		throw new Error('Correo electrónico y contraseña son requeridos');
 	return true;
 };
 
-export const validUpdateProfile = (name, photo) => {
-	if (name.length < 1)
-		throw new Error('Nombre es requerido');
+export const validUpdateProfile = (email, photo) => {
+	if (validator.isEmpty(email.trim()))
+		throw new Error('Correo electrónico es requerido');
+	else if( !validator.isEmail(email) ){
+		throw new Error('Debe de ser un correo electrónico');
+	}
 	else if(!photo || photo.length < 1){
 		throw new Error('Debes de seleccionar una imagen');
 	}
@@ -14,7 +19,7 @@ export const validUpdateProfile = (name, photo) => {
 }
 
 export const validCreateAnalysis = (word, photo, id_student) => {
-	if (word.length < 1)
+	if (validator.isEmpty(word.trim()))
 		throw new Error('Palabra es requerida');
 	else if(!photo || photo.length < 1){
 		throw new Error('Debes de seleccionar una imagen');
@@ -29,13 +34,15 @@ export const validCreateStudent = (full_name, email, password, password_confirma
 	if(!photo || photo.length < 1){
 		throw new Error('Debes de seleccionar una imagen');
 	}
-	else if (full_name.length < 1)
+	else if (validator.isEmpty(full_name.trim()))
 		throw new Error('Nombre es requerido');
-	else if (email.length < 1)
+	else if (validator.isEmpty(email.trim()))
 		throw new Error('Correo electrónico es requerido');
-	else if (password.length < 1)
+	else if (!validator.isEmail(email))
+		throw new Error('Debe de ser un correo electrónico válido');
+	else if (validator.isEmpty(password.trim()))
 		throw new Error('Contraseña es requerida');
-	else if (password_confirmation.length < 1)
+	else if (validator.isEmpty(password_confirmation.trim()))
 		throw new Error('Confirmar contraseña es requerida');
 	else if (password !== password_confirmation)
 		throw new Error('Las contraseñas no coinciden');

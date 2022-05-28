@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import PickerModal from '@freakycoder/react-native-picker-modal';
+import CameraPicker from 'react-native-image-crop-picker';
 import PropTypes from 'prop-types';
 
 import ImageCard from './ImageCard';
@@ -21,27 +22,23 @@ const ImagePicker = ({urlImage = null, setImage, cardStyle = {}}) => {
 
   const [isVisible, setisVisible] = useState(false);
 
-  const chooseOnePicture = method => {
-    let options = {
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-      includeBase64: true,
-      mediaType: 'photo',
-    };
-    method(options, response => {
-      if (!response.didCancel && !response.error && !response.customButton) {
-        setisVisible(false);
-        setImageSelected({
-          filePath: response.assets[0],
-          fileUri: response.assets[0].uri,
-          base64: response.assets[0].base64,
-        });
-        setImage(response.assets[0].base64);
-      }
-    });
+  const options = {
+    cropping: true,
+    includeBase64: true,
+    freeStyleCropEnabled: true,
+    compressImageQuality: 0.75,
   };
+
+  const onSaveImage = (image) => {
+    const {path, data: base64} = image;
+    setisVisible(false);
+    setImageSelected({
+      filePath: path,
+      fileUri: path,
+      base64: base64,
+    });
+    setImage(base64);
+  }
 
   return (
     <>
@@ -49,14 +46,13 @@ const ImagePicker = ({urlImage = null, setImage, cardStyle = {}}) => {
         title="Puedes tomar una foto o seleccionar una de tu álbum."
         isVisible={isVisible}
         data={['Tomar una foto', 'Seleccionar de la galería']}
-        
         onPress={selectedItem => {
           switch (selectedItem) {
             case 'Tomar una foto':
-              chooseOnePicture(launchCamera);
+              CameraPicker.openCamera(options).then(onSaveImage).catch(console.log);
               break;
             default:
-              chooseOnePicture(launchImageLibrary);
+              CameraPicker.openPicker(options).then(onSaveImage).catch(console.log);
               break;
           }
         }}

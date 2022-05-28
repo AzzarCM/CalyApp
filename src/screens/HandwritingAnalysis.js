@@ -22,17 +22,17 @@ import LightImage from '../assets/iluminacion.png';
 import PaperImage from '../assets/papel.png';
 import PenImage from '../assets/lapicero.png';
 import LetterImage from '../assets/letra.png';
+import CropImage from '../assets/cortar-image.png';
 import {showToast} from '../utils/utils';
 
 const HandwritingAnalysis = ({navigation, route}) => {
-  const { params } = route;
-  const { palabra } = params 
+  const { word: selectedWord } = route.params 
   const {uid, token} = useSelector(state => state.auth);
   const {loading, success: done, reminder} = useSelector(state => state.ui);
   const dispatch = useDispatch();
-  const [visible, setVisible] = useState(reminder);
+  const [visible, setVisible] = useState(true);
   const [formAnalysis, setformAnalysis] = useState({
-    word: palabra,
+    word: selectedWord || '',
     original_image: null,
     id_user: uid,
   });
@@ -94,6 +94,7 @@ const HandwritingAnalysis = ({navigation, route}) => {
           <Indication image={LetterImage} label="Letra de model y separada" />,
           <Indication image={PenImage} label="Uso de lapicero" />,
           <Indication image={LightImage} label="Buena iluminación" />,
+          <Indication image={CropImage} label="Recortar la imagen" />,
         ]}
         onSkipButtonPress={() => {
           setVisible(false);

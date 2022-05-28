@@ -1,15 +1,67 @@
-import {StyleSheet, View, SafeAreaView, ScrollView} from 'react-native';
-import React from 'react';
-import flores from '../assets/Vocabulario/flores.jpg';
-import VocabularyCard from '../components/Vocabulario/VocabularyCard';
+import {StyleSheet, View, SafeAreaView, FlatList} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import {useIsFocused} from '@react-navigation/native';
 
-export default function Vocabulario({navigation}) {
+import VocabularyCard from '../components/Vocabulario/VocabularyCard';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
+import {finishLoading, startLoading} from '../redux/actions/ui';
+import {getAllWords} from '../api/vocabulary';
+import { showToast } from '../utils/utils';
+import Spinner from '../components/Spinner';
+import Message from '../components/Message';
+
+export default function Vocabulario() {
+  const [vocabulary, setVocabulary] = useState([]);
+  const {token} = useSelector(state => state.auth);
+  const {loading} = useSelector(state => state.ui);
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      dispatch(startLoading());
+      const response = await getAllWords(token);
+      if (response.ok) {
+        const {data} = response;
+        setVocabulary(data);
+      }else {
+        showToast('error', '¡Oh no!', 'Ocurrió un error al cargar los datos');
+      }
+      dispatch(finishLoading());
+    };
+
+    if (isFocused) {
+      fetchData();
+    }
+  }, [isFocused]);
+
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#FBF5F2" />
+      {loading ? (
+        <Spinner />
+      ) : (
+        <>
+          {vocabulary.length > 0 ? (
+            <View style={styles.scrollContainer}>
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                data={vocabulary}
+                renderItem={({item}) => <VocabularyCard item={item} />}
+                keyExtractor={item => item._id}
+                contentContainerStyle={styles.scrollContainer}
+              />
+            </View>
+          ) : (
+            <Message text="No hay palabras" />
+          )}
+        </>
+      )}
+      {/* <ScrollView contentContainerStyle={styles.scrollContainer}>
         <VocabularyCard image={flores} text="flores" navigation={navigation} />
         <VocabularyCard image={flores} text="flores" navigation={navigation} />
-      </ScrollView>
+      </ScrollView> */}
     </SafeAreaView>
   );
 }

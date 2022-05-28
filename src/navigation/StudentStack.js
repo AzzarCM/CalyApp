@@ -95,7 +95,7 @@ export default function StudentStack() {
         name='VocabularioDetail'
         component={VocabularioDetail}
         options={({route}) => ({
-          title: route.params.palabra,
+          title: route.params.word,
           headerTitleAlign: 'center',
           headerTitleStyle: {
             fontSize: 22,
